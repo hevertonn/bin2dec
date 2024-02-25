@@ -1,38 +1,37 @@
 use std::io;
 
 fn main() {
-    let mut binary_string: String = String::new();
+    println!("This is a lazy binary to decimal converter");
+    println!("Type Ctrl + c to exit!");
 
-    println!("Enter a number to be convert: ");
+    'convert_loop: loop {
+        let mut binary: String = String::new();
 
-    io::stdin()
-        .read_line(&mut binary_string)
-        .expect("Failed to read line");
+        println!("Enter a number to be converted: ");
 
-    binary_string = binary_string.chars().rev().collect();
+        io::stdin()
+            .read_line(&mut binary)
+            .expect("Failed to read the number");
 
-    let mut decimal_number: i64 = 0;
-    let mut index: i64 = 0;
-    
-    for i in binary_string.chars() {
-        if i == '0' {
-            index += 1  
+        binary = binary.chars().rev().collect();
+
+        let mut decimal: u32 = 0;
+        let mut index: u32 = 0;
+        let base: u32 = 2;
+
+        for i in binary.chars() {
+            if i == '\n' {
+            } else if i == '0' {
+                index += 1;
+            } else if i == '1' {
+                decimal += base.pow(index);
+                index += 1;
+            } else {
+                println!("The binary is broken");
+                continue 'convert_loop;
+            }
         }
-        if i == '1' {
-            decimal_number += result(index);
-        }
+
+        println!("The number converted is: {}", decimal);
     }
-
-    println!("The number converted is {}", decimal_number);
-}
-
-fn result(i: i64) -> i64 {
-    let mut id = i;
-    let mut res = 1;
-
-    while id != 0 {
-        res *= 2;
-        id -= 1;
-    }
-    return res;
 }
